@@ -1,6 +1,8 @@
 import { SidebarProvider } from '../app/context/SidebarContext';
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { SupplierProvider } from './context/SuppliersContext';
+import { ProductProvider } from './context/ProductsContext';
 
 const poppins_init = Poppins({
   subsets: ['latin'],
@@ -19,8 +21,16 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={poppins_init.variable}>
         <SidebarProvider>
-          {children}
+        <SupplierProvider>
+          <ProductProvider>
+            
+              { children }
+  
+            </ProductProvider>
+        </SupplierProvider>
         </SidebarProvider>
+
+
       </body>
     </html>
   );

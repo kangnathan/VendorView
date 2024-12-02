@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import DataTable from '../DataTable';
-import { useSupplierContext } from '@/app/context/SuppliersContext'; // Import the context hook
+import { useProductContext } from '@/app/context/ProductsContext'; // Import the context hook
 import OpenInNew from '../OpenInNew';  // Import the OpenInNew component
 import Delete from '../Delete';  // Import the Delete component
 
@@ -13,23 +13,18 @@ const columns = [
     width: 250,
   },
   {
-    field: 'email',
-    headerName: 'Email',
+    field: 'price',
+    headerName: 'Price',
     width: 250,
   },
   {
-    field: 'phone',
-    headerName: 'Phone',
+    field: 'type',
+    headerName: 'Type',
     width: 200,
   },
   {
-    field: 'location',
-    headerName: 'Location',
-    width: 300,
-  },
-  {
-    field: 'pin',
-    headerName: 'PIN',
+    field: 'supplier',
+    headerName: 'Supplier',
     width: 200,
   },
   {
@@ -46,21 +41,20 @@ const columns = [
 ];
 
 export default function SupplierDataGrid() {
-  const { suppliersData, error } = useSupplierContext(); // Access suppliers data from context
+  const { productsData, error } = useProductContext(); // Access suppliers data from context
 
   if (error) {
     return <div>Error: {error}</div>; // Display error if any
   }
 
   // Map supplier data into rows for the DataTable
-  const rows = suppliersData.map((supplier) => ({
-    id: supplier.id, // Keep the id here for any internal use
-    name: supplier.name,
-    email: supplier.email,
-    phone: supplier.phone,
-    location: supplier.location,
-    pin: supplier.pin,
-  }));
+const rows = productsData.map((product) => ({
+  id: product.id, // Keep the id here for any internal use
+  name: product.name,
+  price: product.price,
+  type: product.type,
+  supplier: product.supplier?.name, // Access the supplier's name
+}));
 
   return (
     <Box sx={{ height: 400, width: '100%' }}>

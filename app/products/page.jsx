@@ -10,7 +10,7 @@ import {
 import Sidebar from '../components/Sidebar';
 import SupplierFilter from '../components/Suppliers/SupplierFilter';
 import SupplierSearch from '../components/Suppliers/SupplierSearch';
-import SupplierDataGrid from '../components/Suppliers/SupplierDataGrid';
+import ProductsDataGrid from '../components/Products/ProductsDataGrid';
 
 
 const buttonStyle = {
@@ -61,7 +61,7 @@ export default function Suppliers() {
 
                 {/* Data Grid Section */}
                 <Grid container sx={{ marginTop: '40px' }}>
-                    <SupplierDataGrid />
+                    <ProductsDataGrid />
                 </Grid>
             </Container>
         </Sidebar>
