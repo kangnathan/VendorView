@@ -1,73 +1,50 @@
-'use client'
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import DataTable from '../DataTable';
-import { useSupplierContext } from '@/app/context/SuppliersContext'; // Import the context hook
-import OpenInNew from '../OpenInNew';  // Import the OpenInNew component
-import Delete from '../Delete';  // Import the Delete component
+'use client';
+import React from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useSupplierContext } from '@/app/context/SuppliersContext';
 
-const columns = [
-  {
-    field: 'name',
-    headerName: 'Name',
-    width: 250,
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 250,
-  },
-  {
-    field: 'phone',
-    headerName: 'Phone',
-    width: 200,
-  },
-  {
-    field: 'location',
-    headerName: 'Location',
-    width: 300,
-  },
-  {
-    field: 'pin',
-    headerName: 'PIN',
-    width: 200,
-  },
-  {
-    field: 'actions',
-    headerName: 'Actions',
-    width: 150,
-    renderCell: (params) => (
-      <Box sx={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
-        <OpenInNew supplierId={params.row.id} /> {/* Pass the supplier ID to OpenInNew */}
-        <Delete supplierId={params.row.id} /> {/* Pass the supplier ID to Delete */}
-      </Box>
-    ),
-  },
-];
+const SupplierGrid = () => {
+  const { suppliersData } = useSupplierContext();
 
-export default function SupplierDataGrid() {
-  const { suppliersData, error } = useSupplierContext(); // Access suppliers data from context
+  const handleViewDetails = (supplierId) => {
+    window.open(`/supplier-edit-page?supplierId=${supplierId}`, '_blank');
+  };
 
-  if (error) {
-    return <div>Error: {error}</div>; // Display error if any
-  }
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'email', headerName: 'Email', width: 200 },
+    { field: 'phone', headerName: 'Phone', width: 150 },
+    { field: 'tin', headerName: 'TIN', width: 100 },
+    { field: 'location', headerName: 'Location', width: 200 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      renderCell: (params) => (
+        <IconButton onClick={() => handleViewDetails(params.row.id)}>
+          <VisibilityIcon />
+        </IconButton>
+      ),
+    },
+  ];
 
-  // Map supplier data into rows for the DataTable
   const rows = suppliersData.map((supplier) => ({
-    id: supplier.id, // Keep the id here for any internal use
+    id: supplier.id,
     name: supplier.name,
     email: supplier.email,
     phone: supplier.phone,
     location: supplier.location,
-    pin: supplier.pin,
+    tin: supplier.tin || '',
   }));
 
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
-      <DataTable
-        rows={rows} // Pass the dynamic rows
-        columns={columns} // Pass the modified columns
-      />
-    </Box>
+    <div style={{ height: 500, width: '100%' }}>
+      <DataGrid rows={rows} columns={columns} pageSize={5} />
+    </div>
   );
-}
+};
+
+export default SupplierGrid;

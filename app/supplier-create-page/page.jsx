@@ -1,182 +1,185 @@
-import React from 'react';
-import {
-    Button,
-    TextField,
-    Link,
-    Grid,
-    Box,
-    Typography,
-    Container,
-} from '@mui/material';
+'use client'
+import React, { useState } from 'react';
+import { Grid, Box, Container, Button, Typography, TextField } from '@mui/material';
 import Sidebar from '../components/Sidebar';
-import SupplierCreate from '../components/Suppliers/SupplierCreate';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-
-const textFieldStyle = {
-    fontFamily: 'poppins',
-    backgroundColor: '#F7F7F5',
-    borderRadius: '16px',
-    '& .MuiOutlinedInput-root': {
-        borderRadius: '16px',
-        fontFamily: 'poppins',
-        '& fieldset': {
-            borderColor: 'none',
-            borderWidth: '2px',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: '#A35422',
-        },
-        '&:hover fieldset': {
-            borderColor: '#A35422',
-        },
-    },
-    '& .MuiInputLabel-root': {
-        fontFamily: 'poppins',
-        '&.Mui-focused': {
-            color: '#A35422',
-        },
-    },
-};
-
-const buttonStyle = {
-    color: '#A35422',
-    marginTop: '5px',
-    marginBottom: '20px',
-    padding: '10px 25px 10px 10px',
-    borderRadius: '10px',
-    backgroundColor: '#F1EDE3',
-    fontFamily: 'poppins',
-    fontWeight: 700,
-    '&:hover': {
-        backgroundColor: '#EFD5A4',
-    },
-};
-
-const sectionTitleStyle = {
-    fontFamily: 'poppins',
-    fontWeight: 600,
-    fontSize: '30px',
-};
+import { textFieldStyle, buttonStyle, sectionTitleStyle } from '@/app/styles/SupplierFormStyles';
+import Link from 'next/link';
+import { useSupplierContext } from '@/app/context/SuppliersContext'; // Import SupplierContext
 
 export default function SupplierCreatePage() {
-    return (
-        <Sidebar>
-            <Container component="main" maxWidth="lg">
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Box component="form" noValidate sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <Button
-                                    variant="text"
-                                    sx={buttonStyle}
-                                    startIcon={<ArrowBackRoundedIcon />}
-                                    component={Link}
-                                    href="/suppliers"
-                                >
-                                    Back
-                                </Button>
-                            </Grid>
+  const { createSupplier } = useSupplierContext(); // Access createSupplier from the context
 
-                            <Grid item xs={12}>
-                                <Typography sx={sectionTitleStyle}>
-                                    General
-                                </Typography>
-                            </Grid>
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    tin: '',
+    location: '',
+  });
 
-                            <Grid item xs={12}>
-                                <Grid container spacing={2} sx={{ marginBottom: '20px' }}>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            autoComplete="name"
-                                            name="name"
-                                            variant="outlined"
-                                            required
-                                            fullWidth
-                                            id="name"
-                                            label=" Name"
-                                            autoFocus
-                                            sx={textFieldStyle}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            variant="outlined"
-                                            required
-                                            fullWidth
-                                            id="tin"
-                                            label="TIN"
-                                            name="tin"
-                                            autoComplete="tin"
-                                            sx={textFieldStyle}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            variant="outlined"
-                                            required
-                                            fullWidth
-                                            id="location"
-                                            label="Location"
-                                            name="location"
-                                            autoComplete="location"
-                                            sx={textFieldStyle}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-                            <Grid item xs={12}>
-                                <Typography sx={{ ...sectionTitleStyle, marginBottom: '0px' }}>
-                                    Contacts
-                                </Typography>
-                            </Grid>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newSupplier = await createSupplier(formData);
+    if (newSupplier) {
+      // Successfully created supplier, you can redirect or show a success message
+      console.log('Supplier created successfully:', newSupplier);
+    } else {
+      // Handle error if supplier creation fails
+      console.error('Failed to create supplier');
+    }
+  };
 
-                            <Grid item xs={12}>
-                                <Grid container spacing={2} sx={{ marginBottom: '40px' }}>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            autoComplete="email"
-                                            name="email"
-                                            variant="outlined"
-                                            required
-                                            fullWidth
-                                            id="email"
-                                            label="Email"
-                                            autoFocus
-                                            sx={textFieldStyle}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}></Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            autoComplete="fname"
-                                            name="firstName"
-                                            variant="outlined"
-                                            required
-                                            fullWidth
-                                            id="firstName"
-                                            label="Phone No."
-                                            autoFocus
-                                            sx={textFieldStyle}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
+  return (
+    <Sidebar>
+      <Container component="main" maxWidth="lg">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Button
+                      variant="text"
+                      sx={buttonStyle}
+                      startIcon={<ArrowBackRoundedIcon />}
+                      component={Link}
+                      href="/suppliers"
+                    >
+                      Back
+                    </Button>
+                  </Grid>
 
-                            <Grid item xs={12} sx={{ marginBottom: '100px' }}>
-                                <SupplierCreate />
-                            </Grid>
-                        </Grid>
+                  <Grid item xs={12}>
+                    <Typography sx={sectionTitleStyle}>General</Typography>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Grid container spacing={2} sx={{ marginBottom: '20px' }}>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          autoComplete="name"
+                          name="name"
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="name"
+                          label="Name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          autoFocus
+                          sx={textFieldStyle}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          id="tin"
+                          label="TIN"
+                          name="tin"
+                          value={formData.tin}
+                          onChange={handleChange}
+                          sx={textFieldStyle}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="location"
+                          label="Location"
+                          name="location"
+                          value={formData.location}
+                          onChange={handleChange}
+                          autoComplete="location"
+                          sx={textFieldStyle}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Typography sx={{ ...sectionTitleStyle, marginBottom: '0px' }}>Contacts</Typography>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Grid container spacing={2} sx={{ marginBottom: '40px' }}>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          autoComplete="email"
+                          name="email"
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          sx={textFieldStyle}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}></Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          autoComplete="phone"
+                          name="phone"
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="phone"
+                          label="Phone No."
+                          value={formData.phone}
+                          onChange={handleChange}
+                          sx={textFieldStyle}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid item xs={12} sx={{ marginBottom: '100px' }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                    <Box>
+                      <Button
+                        type="submit" // Trigger form submission
+                        variant="contained"
+                        sx={{
+                          marginTop: '5px',
+                          padding: '10px 25px 10px 25px',
+                          borderRadius: '10px',
+                          backgroundColor: '#A35422',
+                          fontFamily: 'poppins',
+                          fontWeight: 500,
+                          marginRight: '20px',
+                        }}
+                      >
+                        CREATE
+                      </Button>
                     </Box>
-                </Box>
-            </Container>
-        </Sidebar>
-    );
+                  </Box>
+                </Grid>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+      </Container>
+    </Sidebar>
+  );
 }

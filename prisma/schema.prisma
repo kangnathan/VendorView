@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,28 +9,32 @@ datasource db {
 }
 
 model Supplier {
-  id          Int       @id @default(autoincrement())
+  id          Int       @id @default(autoincrement()) // Changed back to autoincrement
   name        String
   email       String
   phone       String
-  pin         String
+  tin         String?    // Renamed 'pin' to 'tin' (Taxpayer Identification Number)
   location    String
-  latitude    Float     
-  longitude   Float     
+  latitude    Float?    // Made nullable
+  longitude   Float?    // Made nullable
+  isFavorite  Boolean   @default(false) // Added isFavorite
+  isDeleted   Boolean   @default(false) // Added isDeleted
   products    Product[] 
 }
 
 model Product {
-  id          Int       @id @default(autoincrement())
+  id          Int       @id @default(autoincrement()) // Changed back to autoincrement
   name        String
   type        String
   price       Float
+  isFavorite  Boolean   @default(false) // Added isFavorite
+  isDeleted   Boolean   @default(false) // Added isDeleted
   supplier    Supplier  @relation(fields: [supplierId], references: [id])
-  supplierId  Int
+  supplierId  Int       // Changed to Int to match Supplier id type
 }
 
 model User {
-  id        String    @default(cuid()) @id
+  id        String    @default(cuid()) @id // Changed to cuid (for User)
   name      String?
   email     String    @unique
   password  String    

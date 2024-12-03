@@ -1,18 +1,18 @@
 import { Box, Button, Link } from "@mui/material";
 
-export default function SupplierCreate() {
+export default function SupplierDelete() {
     return (
         <Box>
             <Button variant="contained" sx={{
                 marginTop: '5px',
-                padding: '10px 25px 10px 25px',
+                padding: '10px 29px 11px 25px',
                 borderRadius: '10px',
-                backgroundColor: '#A35422',
+                backgroundColor: '#A5463A',
                 fontFamily: 'poppins',
                 fontWeight: 500,
                 marginRight: '20px'
             }}>
-                CREATE
+                DELETE
             </Button>
         </Box>
     );

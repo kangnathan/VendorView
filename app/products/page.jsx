@@ -12,21 +12,6 @@ import SupplierFilter from '../components/Suppliers/SupplierFilter';
 import SupplierSearch from '../components/Suppliers/SupplierSearch';
 import ProductsDataGrid from '../components/Products/ProductsDataGrid';
 
-
-const buttonStyle = {
-    marginTop: '5px',
-    padding: '10px 25px',
-    borderRadius: '10px',
-    backgroundColor: '#A35422',
-    fontFamily: 'poppins',
-    fontWeight: 500,
-    color: '#fff',
-    '&:hover': {
-        backgroundColor: '#EFD5A4',
-        color: '#000',
-    },
-};
-
 const sectionTitleStyle = {
     fontFamily: 'poppins',
     fontWeight: 600,
