@@ -13,7 +13,7 @@ export default function Sidebar({ children }) {
   return (
     <Box sx={SidebarStyles.gridContainer(open)}>
       <Drawer sx={SidebarStyles.drawer(open)} variant="persistent" open={open}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '150px' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '50px 25px 50px 25px' }}>
           <Typography variant="h6" noWrap sx={{ fontSize: '24px', fontFamily: 'poppins', fontWeight: 800 }}>
             Vendor <span style={{ color: '#A35422' }}>View</span>
           </Typography>
