@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextResponse } from 'next/server'
+import prisma from '@/lib/prisma'
 
 export async function PUT(req, { params }) {
   const { id } = await params;
@@ -7,7 +7,6 @@ export async function PUT(req, { params }) {
 
   try {
     if (action === 'update') {
-      // Handle updating supplier details
       const { name, email, phone, tin, location } = data;
       const updatedSupplier = await prisma.supplier.update({
         where: { id: Number(id) },
@@ -18,14 +17,17 @@ export async function PUT(req, { params }) {
           ...(tin && { tin }),
           ...(location && { location }),
         },
-      });
-      return NextResponse.json({ supplier: updatedSupplier });
+      })
+      return NextResponse.json({ supplier: updatedSupplier })
     } else if (action === 'delete') {
-      // Handle marking as deleted
       const updatedSupplier = await prisma.supplier.update({
         where: { id: Number(id) },
-        data: { isDeleted: true },  // Mark supplier as deleted
-      });
+        data: { isDeleted: true },  
+      })
+      await prisma.product.updateMany({
+        where: { supplierId: Number(id) },
+        data: { isDeleted: true },  
+      })
       return NextResponse.json({ supplier: updatedSupplier });
     } else {
       return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
@@ -34,4 +36,5 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ error: 'Error handling request' }, { status: 500 });
   }
 }
+
 

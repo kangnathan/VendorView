@@ -3,40 +3,34 @@ import React, { useMemo } from 'react'
 import { useProductContext } from '@/app/context/ProductsContext'
 import { useSupplierContext } from '@/app/context/SuppliersContext'
 import DataTable from '../CustomDataTable'
-import { LinearProgress, Box } from '@mui/material'
+import { LinearProgress, Box, Typography } from '@mui/material'
 import ProductDeleteIcon from '@/app/components/Products/ProductDeleteIcon'
 import ProductEditIcon from '@/app/components/Products/ProductEditIcon'
+import { useParams } from 'next/navigation'
 
-const ProductsDataGrid = () => {
+const SuppliersProducts = () => {
+  const { id } = useParams()
   const { search, productsData, filters } = useProductContext()
   const { suppliersData } = useSupplierContext()
 
-  const isLoading = useMemo(
-    () => !(productsData?.length && suppliersData?.length),
-    [productsData, suppliersData]
+    const supplier = useMemo(() => suppliersData.find((supplier) => supplier.id === Number(id)),
+    [suppliersData, id]
   )
 
-  const getSupplierName = (supplierId) => {
-    const supplier = suppliersData?.find((s) => s.id === supplierId)
-    return supplier ? supplier.name : 'Unknown Supplier'
-  }
+  const isLoading = !supplier || !supplier.products
+  const hasNoProducts = supplier && supplier.products && supplier.products.length === 0
+
 
   const rows = useMemo(() => {
     if (isLoading) return []
 
     const searchLower = search.trim().toLowerCase()
 
-    return productsData
+    return supplier.products
       ?.filter((product) => !product.isDeleted)
       .filter((product) => {
         return Object.entries(filters).every(([key, value]) => {
           if (!value) return true
-
-          if (key === 'supplier') {
-            return getSupplierName(product.supplierId)
-              .toLowerCase()
-              .includes(value.toLowerCase())
-          }
 
           const productValue = product[key]
           return productValue
@@ -51,8 +45,7 @@ const ProductsDataGrid = () => {
         return (
           product.name?.toLowerCase().includes(searchLower) ||
           product.price?.toString().includes(searchLower) ||
-          product.type?.toLowerCase().includes(searchLower) ||
-          getSupplierName(product.supplierId).toLowerCase().includes(searchLower)
+          product.type?.toLowerCase().includes(searchLower) 
         )
       })
       .map((product) => ({
@@ -60,7 +53,6 @@ const ProductsDataGrid = () => {
         name: product.name,
         price: product.price,
         type: product.type,
-        supplier: getSupplierName(product.supplierId),
       }))
   }, [productsData, filters, search, isLoading])
 
@@ -69,7 +61,6 @@ const ProductsDataGrid = () => {
       { field: 'name', headerName: 'Name', width: 250 },
       { field: 'price', headerName: 'Price', width: 250 },
       { field: 'type', headerName: 'Type', width: 250 },
-      { field: 'supplier', headerName: 'Supplier', width: 250 },
       {
         field: 'actions',
         headerName: 'Actions',
@@ -103,4 +94,4 @@ const ProductsDataGrid = () => {
   )
 }
 
-export default ProductsDataGrid
+export default SuppliersProducts

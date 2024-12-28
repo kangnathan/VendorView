@@ -1,8 +1,15 @@
-import { Container, Typography } from '@mui/material'
+'use client'
+import { Container, Typography, Button } from '@mui/material'
 import Sidebar from '../components/Sidebar'
+import SupplierDelete from '@/app/components/Suppliers/SupplierDelete'
 import "../page.module.css";
+import React from 'react';
 
 export default function Suppliers() {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);    
+    
+
     return (
         <Sidebar>
             <Container 
@@ -16,6 +23,10 @@ export default function Suppliers() {
                 <Typography sx={{ fontFamily: 'poppins', fontWeight: 600, fontSize: '30px'}}>
                     Security
                 </Typography>
+
+                <SupplierDelete />
+
+
             </Container>
         </Sidebar>
     )

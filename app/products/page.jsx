@@ -1,53 +1,56 @@
+'use client'
 import React from 'react';
-import { 
-    Container, 
-    Typography, 
-    Grid, 
-    Link, 
-    Button, 
-    Box 
-} from '@mui/material';
+import { Container, Typography, Grid, Button, Box } from '@mui/material';
 import Sidebar from '../components/Sidebar';
-import SupplierFilter from '../components/Suppliers/SupplierFilter';
-import SupplierSearch from '../components/Suppliers/SupplierSearch';
+import ProductsSearch from '../components/Products/ProductsSearch';
 import ProductsDataGrid from '../components/Products/ProductsDataGrid';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import ProductDeleteModal from '../components/Products/ProductDeleteModal';
+import CustomSnackbar from '@/app/components/CustomSnackbar'
+import CustomSubmitButton from '../components/CustomSubmitButton';
+import { sectionTitleStyle } from '@/app/styles/SectionTitle'
+import { useProductContext } from '../context/ProductsContext';
+import ProductFilterModal from '../components/Products/ProductFilterModal';
 
-const sectionTitleStyle = {
-    fontFamily: 'poppins',
-    fontWeight: 600,
-    fontSize: '30px',
-    marginBottom: '20px',
-};
+export default function Products() {
+    const { handleOpen } = useProductContext()
 
-export default function Suppliers() {
+    const handleAddButtonClick = () => {
+        window.open('/product-create-page', '_blank'); // Open in a new tab
+    };
+
     return (
         <Sidebar>
-            <Container 
-                disableGutters={true} 
-                maxWidth={false} 
-                sx={{
-                    width: '85%', 
-                    margin: '100px 0px 0px 100px'
-                }}
-            >
-                {/* Title */}
-                <Typography sx={sectionTitleStyle}>
-                    Products
-                </Typography>
+            <Container component="main" maxWidth="lg" sx={{ marginTop: 8 }}>
+                <CustomSnackbar />
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <Grid container spacing={2}>
+                        {/* Title */}
+                        <Grid item xs={12}>
+                            <Typography sx={sectionTitleStyle}>Products</Typography>
+                        </Grid>
 
-                <Grid container spacing={2}>
-                    {/* Left side: SupplierSearch and SupplierFilter */}
-                    <Grid item xs={12} sm={6} md={8} sx={{ display: 'flex', gap: 2 }}>
-                        <SupplierSearch />
-                        <SupplierFilter />
+                        <ProductDeleteModal />
+                        <ProductFilterModal />
+
+                        {/* Left side: ProductsSearch and ProductsFilter */}
+                        <Grid item xs={12} sm={6} md={8} sx={{ display: 'flex', gap: 2 }}>
+                            <ProductsSearch />
+                            <CustomSubmitButton onClick={handleOpen} text='Filter'/>
+                        </Grid>
+
+                        {/* Right side: ProductAdd Button */}
+                        <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <CustomSubmitButton onClick={handleAddButtonClick} text='add' startIcon={<AddRoundedIcon />} style={{marginRight: '0px'}} />
+                        </Grid>
                     </Grid>
 
-                </Grid>
-
-                {/* Data Grid Section */}
-                <Grid container sx={{ marginTop: '40px' }}>
-                    <ProductsDataGrid />
-                </Grid>
+                    {/* Data Grid Section */}
+                    <Grid container sx={{ marginTop: '40px' }}>
+                        <ProductsDataGrid />
+                    </Grid>
+                </Box>
+                
             </Container>
         </Sidebar>
     );

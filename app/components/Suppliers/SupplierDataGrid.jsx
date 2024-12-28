@@ -1,50 +1,85 @@
-'use client';
-import React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import IconButton from '@mui/material/IconButton';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { useSupplierContext } from '@/app/context/SuppliersContext';
+'use client'
+import React, { useMemo } from 'react'
+import { useSupplierContext } from '@/app/context/SuppliersContext'
+import DataTable from '../CustomDataTable'
+import SupplierDeleteIcon from './SupplierDeleteIcon'
+import SupplierEditIcon from './SupplierEditIcon'
+import CustomTypographyLink from '@/app/components/CustomTypographyLink'
+import { LinearProgress, Box } from '@mui/material'
 
-const SupplierGrid = () => {
-  const { suppliersData } = useSupplierContext();
+const SupplierDataGrid = () => {
+  const { suppliersData, search, filters, applyFilters } = useSupplierContext()
 
-  const handleViewDetails = (supplierId) => {
-    window.open(`/supplier-edit-page?supplierId=${supplierId}`, '_blank');
-  };
+  const isLoading = useMemo(() => !suppliersData || suppliersData.length === 0, [suppliersData])
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'email', headerName: 'Email', width: 200 },
-    { field: 'phone', headerName: 'Phone', width: 150 },
-    { field: 'tin', headerName: 'TIN', width: 100 },
-    { field: 'location', headerName: 'Location', width: 200 },
+  const matchesSearch = (value, searchLower) => value?.trim().toLowerCase().includes(searchLower)
+
+  const rows = useMemo(() => {
+    const searchLower = search.trim().toLowerCase()
+
+    return (applyFilters(suppliersData?.filter((supplier) => !supplier.isDeleted) || [], filters) || [])
+      .filter((supplier) => {
+        if (!searchLower) return true
+        return (
+          matchesSearch(supplier.name, searchLower) ||
+          matchesSearch(supplier.email, searchLower) ||
+          matchesSearch(supplier.phone, searchLower) ||
+          matchesSearch(supplier.location, searchLower) ||
+          matchesSearch(supplier.tin, searchLower)
+        )
+      })
+      .map(({ id, name, email, phone, location, tin }) => ({
+        id,
+        name,
+        email,
+        phone,
+        location,
+        tin: tin || '',
+      }))
+  }, [suppliersData, filters, search, applyFilters])
+
+  const columns = useMemo(() => [
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 210,
+      renderCell: (params) => (
+        <CustomTypographyLink text={params.row.name} href={`/supplier-page/${params.row.id}`} color="black" />
+      ),
+    },
+    { field: 'email', headerName: 'Email', width: 230 },
+    { field: 'phone', headerName: 'Phone', width: 200 },
+    { field: 'tin', headerName: 'TIN', width: 190 },
+    { field: 'location', headerName: 'Location', width: 170 },
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 100,
+      width: 150,
       renderCell: (params) => (
-        <IconButton onClick={() => handleViewDetails(params.row.id)}>
-          <VisibilityIcon />
-        </IconButton>
+        <>
+          <SupplierEditIcon supplierId={params.row.id} />
+          <SupplierDeleteIcon supplierId={params.row.id} />
+        </>
       ),
     },
-  ];
-
-  const rows = suppliersData.map((supplier) => ({
-    id: supplier.id,
-    name: supplier.name,
-    email: supplier.email,
-    phone: supplier.phone,
-    location: supplier.location,
-    tin: supplier.tin || '',
-  }));
+  ], [])
 
   return (
-    <div style={{ height: 500, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} pageSize={5} />
+    <div style={{ height: 700, width: '100%' }}>
+      {isLoading ? (
+        <Box sx={{ width: '100%' }}>
+          <LinearProgress
+            sx={{
+              '& .MuiLinearProgress-bar': { backgroundColor: '#A5463A' },
+              backgroundColor: '#F1EDE3',
+            }}
+          />
+        </Box>
+      ) : (
+        <DataTable rows={rows} columns={columns} pageSize={5} />
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default SupplierGrid;
+export default SupplierDataGrid

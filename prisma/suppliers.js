@@ -1,21 +1,69 @@
 // suppliers.js
-export const suppliers = [
-  {
-    name: "Supplier 1",
-    email: "supplier1@example.com",
-    phone: "123-456-7890",
-    tin: "1234",
-    location: "New York",
-    latitude: 40.7128,
-    longitude: -74.0060
-  },
-  {
-    name: "Supplier 2",
-    email: "supplier2@example.com",
-    phone: "987-654-3210",
-    tin: "5678",
-    location: "Los Angeles",
-    latitude: 34.0522,
-    longitude: -118.2437
-  }
-];
+export   const suppliers = [
+    {
+      name: "Global Tech Supplies",
+      email: "contact@globaltechsupplies.com",
+      phone: "+1 800 123 4567",
+      tin: "123-45-6789",
+      location: "New York, USA",
+      latitude: 40.7128,
+      longitude: -74.0060,
+      isFavorite: true,
+      isDeleted: false,
+    },
+    {
+      name: "EcoGoods Enterprises",
+      email: "info@ecogoods.com",
+      phone: "+1 800 234 5678",
+      tin: "987-65-4321",
+      location: "Los Angeles, USA",
+      latitude: 34.0522,
+      longitude: -118.2437,
+      isFavorite: false,
+      isDeleted: false,
+    },
+    {
+      name: "Green Innovations Ltd.",
+      email: "sales@greeninnovations.com",
+      phone: "+44 20 7946 0958",
+      tin: "GB123456789",
+      location: "London, UK",
+      latitude: 51.5074,
+      longitude: -0.1278,
+      isFavorite: false,
+      isDeleted: false,
+    },
+    {
+      name: "Supplier A",
+      email: "supplierA@gmail.com",
+      phone: "+44 20 7946 0958",
+      tin: "GB123456789",
+      location: "London, UK",
+      latitude: 51.5074,
+      longitude: -0.1278,
+      isFavorite: false,
+      isDeleted: false,
+    },
+    {
+      name: "Supplier B",
+      email: "supplierB@gmail.com",
+      phone: "+44 20 7946 0958",
+      tin: "GB123456789",
+      location: "London, UK",
+      latitude: 51.5074,
+      longitude: -0.1278,
+      isFavorite: false,
+      isDeleted: false,
+    },
+    {
+      name: "Supplier C",
+      email: "supplierC@gmail.com",
+      phone: "+44 20 7946 0958",
+      tin: "GB123456789",
+      location: "London, UK",
+      latitude: 51.5074,
+      longitude: -0.1278,
+      isFavorite: false,
+      isDeleted: false,
+    }
+  ];

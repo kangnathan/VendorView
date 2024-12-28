@@ -1,4 +1,3 @@
-// seed.js
 import { products } from "./products.js";
 import { suppliers } from "./suppliers.js";
 import { users } from "./users.js";
@@ -15,25 +14,37 @@ async function seedUsers() {
 }
 
 async function seedSuppliers() {
+    const createdSuppliers = [];
     for (let supplier of suppliers) {
-        await prisma.supplier.create({
+        const createdSupplier = await prisma.supplier.create({
             data: supplier
         });
+        createdSuppliers.push(createdSupplier); // Save the created supplier for later use
     }
+    return createdSuppliers; // Return the created suppliers
 }
 
-async function seedProducts() {
+async function seedProducts(createdSuppliers) {
     for (let product of products) {
-        await prisma.product.create({
-            data: product
-        });
+        const supplier = createdSuppliers.find(s => s.id === product.supplierId);
+        if (supplier) {
+            console.log(`Seeding product: ${product.name} with supplierId: ${supplier.id}`);  // Log the supplierId
+            await prisma.product.create({
+                data: {
+                    ...product,
+                    supplierId: supplier.id // Ensure product has a valid supplierId
+                }
+            });
+        } else {
+            console.error(`No supplier found for supplierId: ${product.supplierId}`);
+        }
     }
 }
 
 async function main() {
     await seedUsers();
-    await seedSuppliers();
-    await seedProducts();
+    const createdSuppliers = await seedSuppliers();
+    await seedProducts(createdSuppliers); // Pass the created suppliers to seed products
 }
 
 main()

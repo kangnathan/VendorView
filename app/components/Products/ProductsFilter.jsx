@@ -1,11 +1,10 @@
 import { Box, Button } from "@mui/material";
 
 
-export default function CustomButton() {
+export default function ProductsFilter() {
     return (
         <Box>
-            <Button variant="contained"
-                sx={{
+            <Button variant="contained" sx={{
                 marginTop: '5px',
                 padding: '10px 25px 10px 25px',
                 borderRadius: '10px',
@@ -13,7 +12,7 @@ export default function CustomButton() {
                 fontFamily: 'poppins',
                 fontWeight: 500
             }}>
-                Custom
+                Filter
             </Button>
         </Box>
     );

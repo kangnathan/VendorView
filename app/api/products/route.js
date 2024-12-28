@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+// Function to fetch all products
 async function getAllProducts() {
   try {
     const products = await prisma.product.findMany({
@@ -23,4 +24,41 @@ export async function GET() {
   }
 
   return NextResponse.json({ products: productData });
+}
+
+export async function POST(req) {
+  try {
+    const { name, price, type, supplierId } = await req.json();
+
+    if (!name || typeof price !== 'number' || !type || typeof supplierId !== 'number') {
+      return NextResponse.json(
+        { error: 'Missing or invalid required fields: name, price, type, and supplierId' },
+        { status: 400 }
+      );
+    }
+
+    const supplierExists = await prisma.supplier.findUnique({
+      where: { id: supplierId },
+    });
+
+    if (!supplierExists) {
+      return NextResponse.json({ error: 'Supplier not found' }, { status: 404 });
+    }
+
+    const newProduct = await prisma.product.create({
+      data: {
+        name,
+        price,
+        type,
+        supplierId,
+        isFavorite: false,  
+        isDeleted: false,   
+      },
+    });
+
+    return NextResponse.json({ product: newProduct }, { status: 201 });
+  } catch (error) {
+    console.error('Error creating product:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }

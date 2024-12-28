@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { SupplierProvider } from './context/SuppliersContext';
 import { ProductProvider } from './context/ProductsContext';
+import { SnackbarProvider } from './context/SnackbarContext';
 
 const poppins_init = Poppins({
   subsets: ['latin'],
@@ -20,15 +21,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins_init.variable}>
-        <SidebarProvider>
+    <SidebarProvider>
+      <SnackbarProvider>
         <SupplierProvider>
           <ProductProvider>
-            
-              { children }
-  
-            </ProductProvider>
+            {children}
+          </ProductProvider>
         </SupplierProvider>
-        </SidebarProvider>
+      </SnackbarProvider>
+    </SidebarProvider>
 
 
       </body>
