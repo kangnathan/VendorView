@@ -1,7 +1,6 @@
 'use client'
 import { Container, Typography, Button } from '@mui/material'
 import Sidebar from '../components/Sidebar'
-import SupplierDelete from '@/app/components/Suppliers/SupplierDelete'
 import "../page.module.css";
 import React from 'react';
 
@@ -24,7 +23,7 @@ export default function Suppliers() {
                     Security
                 </Typography>
 
-                <SupplierDelete />
+                
 
 
             </Container>
