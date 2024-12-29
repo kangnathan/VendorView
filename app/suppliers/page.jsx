@@ -1,12 +1,6 @@
 'use client'
 import React from 'react';
-import { 
-    Container, 
-    Typography, 
-    Grid, 
-    
-    Box 
-} from '@mui/material';
+import { Container, Typography, Grid, Box } from '@mui/material';
 import Sidebar from '../components/Sidebar';
 import SupplierSearch from '../components/Suppliers/SupplierSearch';
 import SupplierDataGrid from '../components/Suppliers/SupplierDataGrid';

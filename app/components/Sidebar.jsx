@@ -1,19 +1,46 @@
 'use client'
 import React, { useContext } from 'react'
-import { Drawer, List, Typography, IconButton, Box } from '@mui/material'
+import { Drawer, List, Typography, IconButton, Box, useMediaQuery } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import { SidebarContext } from '../context/SidebarContext'
 import SidebarStyles from '../styles/SidebarStyles'
 import MenuListItem from '@/app/context/MenuIListItem'
 
 export default function Sidebar({ children }) {
   const { open, toggleDrawer, menuItems, accountItems } = useContext(SidebarContext)
+  const isSmallScreen = useMediaQuery('(max-width:600px)') // Adjust breakpoint as needed
 
   return (
     <Box sx={SidebarStyles.gridContainer(open)}>
-      <Drawer sx={SidebarStyles.drawer(open)} variant="persistent" open={open}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '50px 25px 50px 25px' }}>
+      <Drawer
+        sx={{
+          ...SidebarStyles.drawer(open),
+          ...(isSmallScreen && { position: 'absolute', zIndex: 1300, width: '100%' }), // Overlay styles for small screens
+        }}
+        variant={isSmallScreen ? 'temporary' : 'persistent'} // Temporary drawer for small screens
+        open={open}
+        onClose={isSmallScreen ? toggleDrawer : undefined} // Add close behavior for temporary drawer
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            marginRight: '15px',
+            marginTop: '15px',
+          }}
+        >
+          <IconButton
+            onClick={toggleDrawer}
+            sx={{
+              color: '#F7F7F5',
+              '&:hover': { backgroundColor: '#424345', color: '#FFFFFF' },
+            }}
+          >
+            <MenuIcon sx={{ color: '#ffffff' }} />
+          </IconButton>
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '30px 25px 50px 25px' }}>
           <Typography variant="h6" noWrap sx={{ fontSize: '24px', fontFamily: 'poppins', fontWeight: 800 }}>
             Vendor <span style={{ color: '#A35422' }}>View</span>
           </Typography>
@@ -38,26 +65,6 @@ export default function Sidebar({ children }) {
             <MenuListItem key={path} text={text} icon={icon} path={path} />
           ))}
         </List>
-
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'right',
-            alignItems: 'right',
-            marginTop: '250px',
-            paddingRight: '30px',
-          }}
-        >
-          <IconButton
-            onClick={toggleDrawer}
-            sx={{
-              color: '#F7F7F5',
-              '&:hover': { backgroundColor: '#424345', color: '#FFFFFF' },
-            }}
-          >
-            <ArrowBackRoundedIcon fontSize="large" />
-          </IconButton>
-        </Box>
       </Drawer>
 
       {!open && (
@@ -66,9 +73,7 @@ export default function Sidebar({ children }) {
         </IconButton>
       )}
 
-      <Box component="main">
-        {children}
-      </Box>
+      <Box component="main" >{children}</Box>
     </Box>
   )
 }
