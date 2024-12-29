@@ -20,21 +20,31 @@ const CustomDataGrid = ({
   }, [data, filters, search, isLoading, getFilteredRows]);
 
   return (
-    <Box sx={{ height, width: '100%', display: 'flex' }}>
+    <Box
+      sx={{
+        height,
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column', // Ensure proper layout stacking
+        position: 'relative',
+      }}
+    >
       {isLoading ? (
-        <LinearProgress
-          sx={{
-            '& .MuiLinearProgress-bar': { backgroundColor: '#A5463A' },
-            backgroundColor: '#F1EDE3',
-          }}
-        />
+
+          <LinearProgress
+            sx={{
+              width: '100%', 
+              '& .MuiLinearProgress-bar': { backgroundColor: '#A5463A' },
+              backgroundColor: '#F1EDE3',
+            }}
+          />
       ) : (
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={pageSize}
           sx={{
-            flexGrow: 1, // Ensure it grows and takes up available space
+            flexGrow: 1,
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#F1EDE3',
               color: '#A5463A',
