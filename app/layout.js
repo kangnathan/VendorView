@@ -4,6 +4,7 @@ import "./globals.css";
 import { SupplierProvider } from './context/SuppliersContext';
 import { ProductProvider } from './context/ProductsContext';
 import { SnackbarProvider } from './context/SnackbarContext';
+import { LocationProvider } from './context/LocationContext'
 
 const poppins_init = Poppins({
   subsets: ['latin'],
@@ -19,19 +20,20 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    
     <html lang="en">
       <body className={poppins_init.variable}>
-    <SidebarProvider>
-      <SnackbarProvider>
-        <SupplierProvider>
-          <ProductProvider>
-            {children}
-          </ProductProvider>
-        </SupplierProvider>
-      </SnackbarProvider>
-    </SidebarProvider>
-
-
+        <SidebarProvider>
+          <SnackbarProvider>
+            <SupplierProvider>
+              <ProductProvider>
+                <LocationProvider>
+                  {children}
+                </LocationProvider>
+              </ProductProvider>
+            </SupplierProvider>
+          </SnackbarProvider>
+        </SidebarProvider>
       </body>
     </html>
   );

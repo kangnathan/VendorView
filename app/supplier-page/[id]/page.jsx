@@ -2,14 +2,12 @@
 import React from 'react';
 import { Container, Typography, Grid, Button, Box } from '@mui/material';
 import Sidebar from '@/app/components/Sidebar';
-import SupplierFilterModal from '@/app/components/Suppliers/SupplierFilterModal';
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { useParams } from 'next/navigation';
 import { useSupplierContext } from '@/app/context/SuppliersContext';
 import SuppliersProducts from '@/app/components/Suppliers/SuppliersProductsDataGrid';
 import { useRouter } from 'next/navigation';
-import LoadingIndicator from '@/app/components/LoadingIndicator';
 import ProductsSearch from '@/app/components/Products/ProductsSearch';
 import { buttonStyle } from '@/app/styles/SupplierFormStyles';
 import ProductDeleteModal from '@/app/components/Products/ProductDeleteModal';
@@ -31,10 +29,6 @@ export default function Suppliers() {
   const handleAddButtonClick = () => {
     router.push('/product-create-page'); // Direct navigation
   };
-
-  if (!supplier) {
-    return <LoadingIndicator/>
-  }
 
   return (
     <Sidebar>

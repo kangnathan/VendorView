@@ -53,7 +53,7 @@ const CustomFilterModal = ({
     >
       <Grid container sx={style} spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h6" align="left" sx={{ fontFamily: 'Poppins', marginBottom: '20px' }}>
+          <Typography variant="h6" align="left" sx={{ fontFamily: 'poppins', marginBottom: '20px' }}>
             {title} Filters
           </Typography>
         </Grid>

@@ -1,11 +1,11 @@
 // ProductCreatePageStyles.js
 export const formControlStyle = {
-  fontFamily: 'Poppins',
+  fontFamily: 'poppins',
   backgroundColor: '#F7F7F5',
   borderRadius: '16px',
   '& .MuiOutlinedInput-root': {
     borderRadius: '16px',
-    fontFamily: 'Poppins',
+    fontFamily: 'poppins',
     '& fieldset': {
       borderColor: 'none',
       borderWidth: '2px',
@@ -18,7 +18,7 @@ export const formControlStyle = {
     },
   },
   '& .MuiInputLabel-root': {
-    fontFamily: 'Poppins',
+    fontFamily: 'poppins',
     '&.Mui-focused': {
       color: '#A35422',
     },
@@ -26,7 +26,7 @@ export const formControlStyle = {
 };
 
 export const selectStyle = {
-  fontFamily: 'Poppins',
+  fontFamily: 'poppins',
   borderRadius: '16px',
   '& .MuiOutlinedInput-root': {
     borderRadius: '16px',
@@ -40,7 +40,7 @@ export const selectStyle = {
 };
 
 export const menuItemStyle = {
-  fontFamily: 'Poppins',
+  fontFamily: 'poppins',
   '&:hover': {
     backgroundColor: '#A35422',
     color: '#FFFFFF',
@@ -54,7 +54,7 @@ export const menuItemStyle = {
 export const menuPaperStyle = {
   borderRadius: '16px',
   '& .MuiMenuItem-root': {
-    fontFamily: 'Poppins',
+    fontFamily: 'poppins',
     '&:hover': {
       backgroundColor: '#A35422',
       color: '#FFFFFF',

@@ -2,7 +2,7 @@ import { InputAdornment } from "@mui/material"
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 
   export  const textFieldStyles = {
-        fontFamily: 'Poppins',
+        fontFamily: 'poppins',
         backgroundColor: '#F7F7F5',
         borderRadius: '16px',
         '& .MuiOutlinedInput-root': {

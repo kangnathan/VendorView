@@ -16,7 +16,7 @@
   };
 
  export const inputStyles = {
-    fontFamily: 'Poppins',
+    fontFamily: 'poppins',
     backgroundColor: '#F7F7F5',
     borderRadius: '16px',
     '& .MuiOutlinedInput-root': {
@@ -40,7 +40,7 @@
   };
 
  export const selectStyles = {
-    fontFamily: 'Poppins',
+    fontFamily: 'poppins',
     borderRadius: '16px',
     '& .MuiSelect-select': {
       borderRadius: '16px',
@@ -51,7 +51,7 @@
   };
 
   export const menuItemStyles = {
-    fontFamily: 'Poppins',
+    fontFamily: 'poppins',
     '&:hover': {
       backgroundColor: '#A35422',
       color: 'white',

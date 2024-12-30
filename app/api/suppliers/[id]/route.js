@@ -7,7 +7,7 @@ export async function PUT(req, { params }) {
 
   try {
     if (action === 'update') {
-      const { name, email, phone, tin, location } = data;
+      const { name, email, phone, tin, location, latitude, longitude} = data;
       const updatedSupplier = await prisma.supplier.update({
         where: { id: Number(id) },
         data: {
@@ -16,6 +16,8 @@ export async function PUT(req, { params }) {
           ...(phone && { phone }),
           ...(tin && { tin }),
           ...(location && { location }),
+          ...(latitude && { latitude }),
+          ...(longitude && { longitude }),
         },
       })
       return NextResponse.json({ supplier: updatedSupplier })

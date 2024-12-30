@@ -2,6 +2,7 @@
 import React, { useMemo } from 'react';
 import { Box, LinearProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { customDataGridStyles } from '@/app/styles/CustomDataGridStyles';
 
 const CustomDataGrid = ({
   data = [],
@@ -10,8 +11,8 @@ const CustomDataGrid = ({
   getFilteredRows,
   columns,
   isLoading = false,
-  height = 600,
   pageSize = 5,
+  
 }) => {
   const rows = useMemo(() => {
     if (isLoading) return [];
@@ -20,37 +21,18 @@ const CustomDataGrid = ({
   }, [data, filters, search, isLoading, getFilteredRows]);
 
   return (
-    <Box
-      sx={{
-        height,
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column', // Ensure proper layout stacking
-        position: 'relative',
-      }}
-    >
+    <Box sx={customDataGridStyles.container}>
       {isLoading ? (
-
-          <LinearProgress
-            sx={{
-              width: '100%', 
-              '& .MuiLinearProgress-bar': { backgroundColor: '#A5463A' },
-              backgroundColor: '#F1EDE3',
-            }}
-          />
+        <LinearProgress sx={customDataGridStyles.loadingProgress} />
       ) : (
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={pageSize}
-          sx={{
-            flexGrow: 1,
-            '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: '#F1EDE3',
-              color: '#A5463A',
-              fontWeight: 'bold',
-            },
-          }}
+          disableRowSelectionOnClick // Prevents row selection on click
+          disableColumnMenu // Disables the column menu
+          isRowSelectable={() => false} // Prevents row selection
+          sx={customDataGridStyles.dataGrid}
         />
       )}
     </Box>

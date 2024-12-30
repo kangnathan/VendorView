@@ -17,9 +17,12 @@
     "@mui/material": "^6.1.9",
     "@mui/x-data-grid": "^7.23.0",
     "@prisma/client": "^6.0.0",
+    "mapbox-gl": "^3.9.1",
+    "maplibre-gl": "^4.7.1",
     "next": "15.0.3",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-map-gl": "^7.1.8"
   },
   "devDependencies": {
     "prisma": "^6.0.0"
@@ -27,5 +30,5 @@
   "prisma": {
     "seed": "node prisma/seed.js"
   },
-  "type": "module" 
+  "type": "module"
 }

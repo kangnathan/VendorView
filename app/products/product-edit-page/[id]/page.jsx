@@ -4,7 +4,6 @@ import { useProductContext } from '@/app/context/ProductsContext';
 import { Grid, Box, Container, Typography,Button } from '@mui/material';
 import Sidebar from '@/app/components/Sidebar';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import LoadingIndicator from '@/app/components/LoadingIndicator';
 import Link from 'next/link';
 import CustomTextField from '@/app/components/CustomTextField';
 import CustomSubmitButton from '@/app/components/CustomSubmitButton';
@@ -70,10 +69,6 @@ const EditProductPage = () => {
       setLoading(false);
     }
   };
-
-  if (!product) {
-    return <LoadingIndicator />;
-  }
 
   const fields = [
     { label: 'Name', name: 'name', type: 'text', required: true },
