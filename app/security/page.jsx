@@ -9,7 +9,7 @@ import CustomSnackbar from '../components/CustomSnackbar'
 import { useSnackbarContext } from '../context/SnackbarContext'
 import { handlePasswordUpdate } from '@/app/utils/handlePasswordUpdate'
 
-export default function Suppliers() {
+export default function HomePage() {
   const router = useRouter();
   const { showSnackbar } = useSnackbarContext();
 

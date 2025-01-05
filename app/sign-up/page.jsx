@@ -17,6 +17,7 @@ export default function SignUpPage() {
 
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({ name: '', email: '', password: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const togglePasswordVisibility = () => setShowPassword(prev => !prev)
 
@@ -27,6 +28,8 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    setIsSubmitting(true)
     const response = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,11 +41,14 @@ export default function SignUpPage() {
     if (!data.success) {
       const errorMessages = data.errors ? Object.values(data.errors).join(", ") : "An unexpected error occurred."
       showSnackbar(errorMessages, "warning")
+      setIsSubmitting(false)
       return
+      
     }
 
     router.push("/")
     showSnackbar("Account created successfully!", "success")
+    setIsSubmitting(false)
   }
 
   return (
@@ -58,7 +64,7 @@ export default function SignUpPage() {
         <Grid item xs={12} sm={6}>
           <Grid container spacing={2} direction="column">
             <Grid item>
-              <Typography sx={{ fontWeight: 700, fontSize: '40px' }}>Sign Up</Typography>
+              <Typography sx={{ fontWeight: 700, fontSize: '40px', fontFamily: "poppins", }}>Sign Up</Typography>
             </Grid>
 
             <Grid item>
@@ -106,7 +112,11 @@ export default function SignUpPage() {
             </Grid>
 
             <Grid item sx={{ marginTop: 1.4 }}>
-              <CustomSubmitButton text='Submit' style={{ textTransform: 'none' }} onClick={handleSubmit} />
+              <CustomSubmitButton
+                text={isSubmitting ? "Submitting..." : "Submit"}
+                style={{ textTransform: 'none' }}
+                onClick={handleSubmit}
+                disabled={isSubmitting}/>
             </Grid>
           </Grid>
         </Grid>

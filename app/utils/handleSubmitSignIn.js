@@ -23,8 +23,9 @@ export const handleSubmitSignIn = async (formData, showSnackbar, router, setIsSu
     const data = await response.json()
 
     if (response.ok) {
-      showSnackbar('Signed in successfully', 'success')
       router.push('/home')
+      showSnackbar('Signed in successfully', 'success')
+      
     } else {
       showSnackbar(data.error || 'An error occurred', 'warning')
     }

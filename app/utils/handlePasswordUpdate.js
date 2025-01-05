@@ -38,9 +38,9 @@ export const handlePasswordUpdate = async (formData, showSnackbar, router) => {
       }
       showSnackbar('Password updated successfully!', 'success');
     } else {
-      showSnackbar(data.error || data.message, 'error');
+      showSnackbar(data.error || data.message, 'warning');
     }
   } catch (error) {
-    showSnackbar('An error occurred while updating the password.', 'error');
+    showSnackbar('An error occurred while updating the password.', 'warning');
   }
 };
