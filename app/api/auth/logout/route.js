@@ -1,12 +1,20 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
 export async function POST(req) {
   try {
-    const cookieManager = await cookies();
-    cookieManager.delete('vendor-view', { path: '/' });
-    return NextResponse.redirect(new URL('/', req.url));
+    const response = NextResponse.json({ success: true, message: 'Logged out successfully.' });
+    
+    response.cookies.set('vendor-view', '', {
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 0,
+      secure: process.env.NODE_ENV === 'production', 
+    });
+
+    return response;
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Internal server error.' }, { status: 500 });
+    console.error('Logout error:', error); 
+
+    return NextResponse.json({ error: 'Internal server error.', success: false }, { status: 500 });
   }
 }
