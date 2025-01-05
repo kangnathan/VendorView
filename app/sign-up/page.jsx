@@ -1,237 +1,132 @@
 'use client'
-import { Checkbox, Box, Typography, Grid, TextField, Button, IconButton, InputAdornment } from "@mui/material";
-import { useState } from "react";
-import Link from "next/link";
-import Management from "@/app/assets/Management.png";
-import Image from "next/image";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import SignUpButton from '@/app/components/Signup/SignUpButton'
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Box, Typography, Grid, TextField, IconButton, InputAdornment } from "@mui/material"
+import { useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import Management from "@/app/assets/Management.png"
+import CustomSubmitButton from "../components/CustomSubmitButton"
+import CustomSnackbar from "../components/CustomSnackbar"
+import { containerStyles, gridContainerStyles, titleStyles, textFieldStyles, imageStyles, linkStyles } from '@/app/styles/SignUpPageStyles'
+import { useSnackbarContext } from '@/app/context/SnackbarContext'
 
-export default function SignInPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [focused, setFocused] = useState(false);
+export default function SignUpPage() {
+  const { showSnackbar } = useSnackbarContext()
+  const router = useRouter()
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault(); // Prevents focus loss on icon click
-  };
+  const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' })
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
+  const togglePasswordVisibility = () => setShowPassword(prev => !prev)
 
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const response = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+
+    const data = await response.json()
+
+    if (!data.success) {
+      const errorMessages = data.errors ? Object.values(data.errors).join(", ") : "An unexpected error occurred."
+      showSnackbar(errorMessages, "warning")
+      return
+    }
+
+    router.push("/")
+    showSnackbar("Account created successfully!", "success")
+  }
 
   return (
-    <>
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "90vh",
-        padding: 1.4, // Reduced padding proportionally
-      }}
-          >
-              
-              
+    <Box sx={containerStyles}>
+      <CustomSnackbar />
+      <Grid container spacing={3} sx={gridContainerStyles}>
+        <Grid item xs={12}>
+          <Typography variant="h6" sx={titleStyles}>
+            Vendor <span style={{ color: '#A35422' }}>View</span>
+          </Typography>
+        </Grid>
 
-
-      <Grid
-        container
-        spacing={3} // Slightly reduced spacing
-        sx={{
-          backgroundColor: "#F7F7F5",
-          borderRadius: "18px",
-          boxShadow: 3,
-          padding: { xs: 5.1, sm: 8.8 }, // Reduced padding proportionally
-          maxWidth: {
-            xs: "75%", // Extra small screens
-            sm: "80%", // Small screens
-            md: "70%", // Medium screens
-            lg: "60%", // Large screens
-            xl: "55%", // Extra large screens
-            xxl: "50%", // Ultra large screens (custom if defined in theme)
-          }, // Scaled down by 30%
-        }}
-              >
-                  <Grid item xs={12}>
-                                      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '0px' }}>
-                    <Typography variant="h6" noWrap sx={{ fontSize: '24px', fontFamily: 'poppins', fontWeight: 800 }}>
-                        Vendor <span style={{ color: '#A35422' }}>View</span>
-                    </Typography>
-                </Box>
-                  </Grid>
-                  
-        {/* Left Section */}
         <Grid item xs={12} sm={6}>
-        <Grid container spacing={2} direction="column">
-            <Grid item xs={12}>
-              <Typography
-                sx={{
-                  fontFamily: 'poppins',
-                    fontWeight: "700",
-                    fontSize: '40px',
-                  textAlign: "left",
-                }}
-              >
-                Sign Up
-              </Typography>
+          <Grid container spacing={2} direction="column">
+            <Grid item>
+              <Typography sx={{ fontWeight: 700, fontSize: '40px' }}>Sign Up</Typography>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item>
               <TextField
                 label="Name"
-                type="name"
                 variant="standard"
-      sx={{
-        fontFamily: 'poppins',
-        width: '80%',
-        '& .MuiInputLabel-root': {
-          fontFamily: 'poppins', // Label font
-          '&.Mui-focused': {
-            color: 'black',
-          },
-        },
-        '& .MuiInputBase-input': {
-          fontFamily: 'poppins', // Input text font
-        },
-        '& .MuiInput-underline': {
-          '&:after': {
-            borderColor: '#A35422',  // Changes the focused underline color to #A35422
-          },
-        },
-      }}
+                sx={textFieldStyles}
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
               />
             </Grid>
 
-            <Grid item xs={12}>
-<TextField
-  label="Email"
-  type="email"
-  variant="standard"
-      sx={{
-        fontFamily: 'poppins',
-        width: '80%',
-        '& .MuiInputLabel-root': {
-          fontFamily: 'poppins', // Label font
-          '&.Mui-focused': {
-            color: 'black',
-          },
-        },
-        '& .MuiInputBase-input': {
-          fontFamily: 'poppins', // Input text font
-        },
-        '& .MuiInput-underline': {
-          '&:after': {
-            borderColor: '#A35422',  // Changes the focused underline color to #A35422
-          },
-        },
-      }}
-/>
-
+            <Grid item>
+              <TextField
+                label="Email"
+                type="email"
+                variant="standard"
+                sx={textFieldStyles}
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </Grid>
 
-            <Grid item xs={12}>
-    <TextField
-      label="Password"
-      type={showPassword ? 'text' : 'password'}
-      variant="standard"
-      sx={{
-        fontFamily: 'poppins',
-        width: '80%',
-        '& .MuiInputLabel-root': {
-          fontFamily: 'poppins', // Label font
-          '&.Mui-focused': {
-            color: 'black',
-          },
-        },
-        '& .MuiInputBase-input': {
-          fontFamily: 'poppins', // Input text font
-        },
-        '& .MuiInput-underline': {
-          '&:after': {
-            borderColor: '#A35422',  // Changes the focused underline color to #A35422
-          },
-        },
-      }}
-      onFocus={() => setFocused(true)} // Set focused to true when input is focused
-      onBlur={() => setFocused(false)} // Set focused to false when input is blurred
-      InputProps={{
-        startAdornment: focused && (
-          <InputAdornment position="start">
-            <IconButton
-              onClick={togglePasswordVisibility}
-              onMouseDown={handleMouseDownPassword}
-              edge="start"
-            >
-              {showPassword ? <VisibilityOff fontSize="small"/> : <Visibility fontSize="small" />}
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-    />
-
-
+            <Grid item>
+              <TextField
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                variant="standard"
+                sx={textFieldStyles}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
             </Grid>
 
-            <Grid
-              item
-              xs={12}
-              sx={{ marginTop: 1.4, textAlign: "left" }}
-            >
-          <SignUpButton/>
-
+            <Grid item sx={{ marginTop: 1.4 }}>
+              <CustomSubmitButton text='Submit' style={{ textTransform: 'none' }} onClick={handleSubmit} />
             </Grid>
           </Grid>
         </Grid>
 
-        {/* Right Section */}
-                  <Grid item xs={12} sm={6}>
-                      
-          <Grid container spacing={2} direction="column">
-            <Grid
-              item
-              sx={{
-                display: { xs: "none", sm: "block", md: "block" }, // Hide image on extra-small screens
-              }}
-            >
-              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Image
-                  src={Management}
-                  alt="Management"
-                  style={{ width: "76%", height: "auto" }} // Ensures responsive scaling
-                  priority // Improves loading for critical images
-                />
-              </Box>
+        <Grid item xs={12} sm={6}>
+          <Grid container spacing={2} direction="column" alignItems="center">
+            <Grid item sx={{ display: { xs: "none", sm: "block" } }}>
+              <Image src={Management} alt="Management" style={imageStyles} priority />
             </Grid>
 
-            <Grid
-              item
-              xs={12}
-              sx={{ marginTop: { sm: 1.4, xs: 0 }, textAlign: "center" }}
-            >
+            <Grid item>
               <Typography variant="body2">
-<Link
-  href="/"
-  style={{
-    color: "black",
-    textDecoration: "none",
-    transition: "text-decoration 0.3s ease", // Smooth transition for underline
-  }}
-  onMouseEnter={(e) => e.target.style.textDecoration = "underline"}
-  onMouseLeave={(e) => e.target.style.textDecoration = "none"}
->
-  I already have an account
-</Link>
+                <Link href="/" style={linkStyles}>
+                  I already have an account
+                </Link>
               </Typography>
             </Grid>
           </Grid>
-
-          
         </Grid>
       </Grid>
-      </Box>
-      </>
-  );
+    </Box>
+  )
 }

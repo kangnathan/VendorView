@@ -23,7 +23,6 @@ const validateProductInputs = (data) => {
     return "Type must be a valid string with no special characters.";
   }
 
-  // If all validations pass, return null (no errors)
   return null;
 };
 

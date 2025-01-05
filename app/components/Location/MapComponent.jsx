@@ -7,6 +7,7 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import CustomMarker from '@/app/components/Location/CustomMarker'
 import { useLocationContext } from '@/app/context/LocationContext'
 import { useSupplierContext } from '@/app/context/SuppliersContext'
+import { useRouter } from 'next/navigation'
 
 const Map = dynamic(() => import('react-map-gl').then((mod) => mod.Map), { ssr: false })
 const NavigationControl = dynamic(
@@ -16,6 +17,7 @@ const NavigationControl = dynamic(
 const Marker = dynamic(() => import('react-map-gl').then((mod) => mod.Marker), { ssr: false })
 
 const MapComponent = () => {
+  const router = useRouter()
   const { suppliersData, search, filters, applyFilters } = useSupplierContext()
   const { clickedLocation, handleMapClick } = useLocationContext()
 
@@ -33,7 +35,7 @@ const MapComponent = () => {
   }, [suppliersData, search, filters, applyFilters])
 
   const handleMarkerClick = useCallback((supplierId) => {
-    window.open(`/supplier-page/${supplierId}`, '_blank')
+    router.push(`/supplier-page/${supplierId}`)
   }, [])
 
   return (
@@ -42,7 +44,7 @@ const MapComponent = () => {
       initialViewState={{
         longitude: 121.04926773442318,
         latitude: 14.369772655622302,
-        zoom: 14,
+        zoom: 18,
       }}
       style={{ width: '100%', height: '100vh' }}
       mapStyle="https://api.maptiler.com/maps/streets/style.json?key=9IUxvvqmM3IECgSRFz2n"

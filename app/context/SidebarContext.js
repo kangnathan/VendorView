@@ -20,7 +20,26 @@ export const SidebarProvider = ({ children }) => {
 
   const handleItemClick = (path) => {
     setActivePath(path);
-    router.push(path);
+    if (path === '/') {
+      handleLogout();
+    } else {
+      router.push(path);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
+      if (response.ok) {
+        router.push('/');
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
 
   useEffect(() => {

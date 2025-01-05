@@ -1,87 +1,65 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
-import { useSupplierContext } from '@/app/context/SuppliersContext'
-import { useLocationContext } from '@/app/context/LocationContext'
-import {
-  Grid,
-  Modal,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  Typography,
-  Box,
-} from '@mui/material'
-import {
-  formControlStyle,
-  selectStyle,
-  menuItemStyle,
-  menuPaperStyle,
-} from '@/app/styles/ProductCreatePageStyles'
-import { style } from '@/app/styles/FilterModalStyles'
-import CustomSubmitButton from '../CustomSubmitButton'
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSupplierContext } from '@/app/context/SuppliersContext';
+import { useLocationContext } from '@/app/context/LocationContext';
+import { Grid, Modal, InputLabel, MenuItem, FormControl, Select, Typography, Box } from '@mui/material';
+import { formControlStyle, selectStyle, menuItemStyle, menuPaperStyle } from '@/app/styles/ProductCreatePageStyles';
+import { style } from '@/app/styles/FilterModalStyles';
+import CustomSubmitButton from '../CustomSubmitButton';
 
 const LocationSet = () => {
-  const { suppliersData, updateSupplier } = useSupplierContext()
-  const { clickedLocation, open, handleClose, clearClickedLocation } = useLocationContext()
+  const { suppliersData, updateSupplier } = useSupplierContext();
+  const { clickedLocation, open, handleClose, clearClickedLocation } = useLocationContext();
 
-  const [formData, setFormData] = useState({
-    latitude: '',
-    longitude: '',
-    supplierId: '',
-  })
-  const [loading, setLoading] = useState(false)
+  const [formData, setFormData] = useState({ latitude: '', longitude: '', supplierId: '' });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (clickedLocation) {
-      setFormData((prevData) => ({
-        ...prevData,
+      setFormData((prev) => ({
+        ...prev,
         latitude: clickedLocation.latitude,
         longitude: clickedLocation.longitude,
-      }))
+      }));
     }
-  }, [clickedLocation])
+  }, [clickedLocation]);
 
-  const handleChange = useCallback(({ target: { name, value } }) => {
-    setFormData((prevData) => ({ ...prevData, [name]: value }))
-  }, [])
+  const handleChange = useCallback(
+    ({ target: { name, value } }) => setFormData((prev) => ({ ...prev, [name]: value })),
+    []
+  );
 
   const handleClear = useCallback(() => {
-    setFormData({
-      latitude: '',
-      longitude: '',
-      supplierId: '',
-    })
-    clearClickedLocation()
-  }, [clearClickedLocation])
+    setFormData({ latitude: '', longitude: '', supplierId: '' });
+    clearClickedLocation();
+  }, [clearClickedLocation]);
 
   const handleSubmit = useCallback(
     async (e) => {
-      e.preventDefault()
-      setLoading(true)
-
+      e.preventDefault();
+      setLoading(true);
       try {
-        await updateSupplier(formData.supplierId, formData)
-        console.log(`Supplier updated: ${formData.supplierId}`)
-        handleClear()
-        handleClose()
+        await updateSupplier(formData.supplierId, formData);
+        console.log(`Supplier updated: ${formData.supplierId}`);
+        handleClear();
+        handleClose();
       } catch (error) {
-        console.error('Failed to update supplier:', error)
+        console.error('Failed to update supplier:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     },
     [formData, updateSupplier, handleClear, handleClose]
-  )
+  );
 
   const supplierOptions = useMemo(
     () =>
-      suppliersData.map((supplier) => (
-        <MenuItem key={supplier.id} value={supplier.id} sx={menuItemStyle}>
-          {supplier.name}
+      suppliersData.map(({ id, name }) => (
+        <MenuItem key={id} value={id} sx={menuItemStyle}>
+          {name}
         </MenuItem>
       )),
     [suppliersData]
-  )
+  );
 
   return (
     <Modal
@@ -93,11 +71,7 @@ const LocationSet = () => {
     >
       <Grid container sx={style} spacing={2}>
         <Grid item xs={12}>
-          <Typography
-            variant="h6"
-            align="left"
-            sx={{ fontFamily: 'Poppins', marginBottom: '20px' }}
-          >
+          <Typography variant="h6" align="left" sx={{ fontFamily: 'Poppins', mb: 2 }}>
             Set location for:
           </Typography>
         </Grid>
@@ -125,7 +99,7 @@ const LocationSet = () => {
         <Grid
           item
           xs={12}
-          sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}
+          sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}
         >
           <CustomSubmitButton
             loading={false}
@@ -142,7 +116,7 @@ const LocationSet = () => {
         </Grid>
       </Grid>
     </Modal>
-  )
-}
+  );
+};
 
-export default LocationSet
+export default LocationSet;

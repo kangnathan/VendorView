@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-// Function to fetch all products
 async function getAllProducts() {
   try {
     const products = await prisma.product.findMany({
       include: {
-        supplier: true, // Include supplier information for each product
+        supplier: true, 
       },
     });
     return products;
