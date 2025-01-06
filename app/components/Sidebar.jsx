@@ -45,7 +45,7 @@ export default function Sidebar({ children }) {
 
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '50px 25px 50px 25px' }}>
           <Typography variant="h6" noWrap sx={{ fontSize: '24px', fontFamily: 'poppins', fontWeight: 800 }}>
-            Vendor <span style={{ color: '#A35422' }}>View</span>
+            Vendor<span style={{ color: '#A35422' }}>View</span>
           </Typography>
         </Box>
 

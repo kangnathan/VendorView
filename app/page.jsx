@@ -108,10 +108,23 @@ export default function SignInPage() {
             <Grid item sx={{ marginTop: 1.4 }}>
               <CustomSubmitButton
                 text={isSubmitting ? "Submitting..." : "Submit"}
-                style={{ textTransform: 'none' }}
+                style={{ textTransform: 'none', marginBottom: '20px' }}
                 onClick={handleSubmit}
                 disabled={isSubmitting}
               />
+            </Grid>
+
+            <Grid item sx={{ marginTop: 1.4 }}>
+              <Typography variant="body2">
+                <Link
+                  href="/forgot-password-page"
+                  style={{ color: "black", textDecoration: "none" }}
+                  onMouseEnter={(e) => e.target.style.textDecoration = "underline"}
+                  onMouseLeave={(e) => e.target.style.textDecoration = "none"}
+                >
+                  Forgot password?
+                </Link>
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
