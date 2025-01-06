@@ -1,18 +1,18 @@
 // users.js
 export const users = [
   {
-    name: "John Doe",
-    email: "john.doe@example.com",
+    name: "Karl Nathan",
+    email: "karlnathanr@gmail.com",
     password: "hashedpassword123"
   },
   {
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
+    name: "Karl",
+    email: "karlnathanr2@gmail.com",
     password: "hashedpassword456"
   },
   {
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
+    name: "Nathan",
+    email: "karlnathanr3@gmail.com",
     password: "hashedpassword789"
   }
 ];

@@ -5,53 +5,53 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function seedUsers() {
-    for (let user of users) {
-        await prisma.user.create({
-            data: user
-        });
-    }
-}
-
-async function seedSuppliers() {
-    const createdSuppliers = [];
-    for (let supplier of suppliers) {
-        const createdSupplier = await prisma.supplier.create({
-            data: supplier
-        });
-        createdSuppliers.push(createdSupplier); // Save the created supplier for later use
-    }
-    return createdSuppliers; // Return the created suppliers
-}
-
-async function seedProducts(createdSuppliers) {
-    for (let product of products) {
-        const supplier = createdSuppliers.find(s => s.id === product.supplierId);
-        if (supplier) {
-            console.log(`Seeding product: ${product.name} with supplierId: ${supplier.id}`);  // Log the supplierId
-            await prisma.product.create({
-                data: {
-                    ...product,
-                    supplierId: supplier.id // Ensure product has a valid supplierId
-                }
-            });
-        } else {
-            console.error(`No supplier found for supplierId: ${product.supplierId}`);
-        }
-    }
-}
-
 async function main() {
-    await seedUsers();
-    const createdSuppliers = await seedSuppliers();
-    await seedProducts(createdSuppliers); // Pass the created suppliers to seed products
+  try {
+
+    console.log("Seeding users...");
+    await Promise.all(users.map((user) => prisma.user.create({ data: user })));
+    console.log("Users seeded successfully!");
+
+    console.log("Seeding suppliers...");
+    const createdSuppliers = await Promise.all(
+      suppliers.map((supplier) => prisma.supplier.create({ data: supplier }))
+    );
+    console.log("Suppliers seeded successfully!");
+
+    const supplierMap = createdSuppliers.reduce((map, supplier) => {
+      map[supplier.name] = supplier.id;
+      return map;
+    }, {});
+
+    console.log("Seeding products...");
+    for (let product of products) {
+      const supplierId = supplierMap[product.supplierName];
+      if (supplierId) {
+        console.log(
+          `Seeding product: ${product.name} with supplierId: ${supplierId}`
+        );
+
+        const { supplierName, ...productData } = product;
+
+        await prisma.product.create({
+          data: {
+            ...productData,
+            supplierId, 
+          },
+        });
+      } else {
+        console.error(
+          `No supplier found for supplierName: ${product.supplierName}`
+        );
+      }
+    }
+    console.log("Products seeded successfully!");
+  } catch (e) {
+    console.error("Error seeding data:", e);
+    process.exit(1);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
-main()
-    .catch(e => {
-        console.error(e);
-        process.exit(1);
-    })
-    .finally(() => {
-        prisma.$disconnect();
-    });
+main();
