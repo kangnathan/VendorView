@@ -4,15 +4,14 @@ import "./globals.css";
 import { SupplierProvider } from './context/SuppliersContext';
 import { ProductProvider } from './context/ProductsContext';
 import { SnackbarProvider } from './context/SnackbarContext';
-import { LocationProvider } from './context/LocationContext'
+import { LocationProvider } from './context/LocationContext';
 import { EmailProvider } from './context/EmailContext';
 
 const poppins_init = Poppins({
   subsets: ['latin'],
   variable: "--font-poppins",
-  weight: ['100','200','300','400', '500', '600', '700', '800'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
 });
-
 
 export const metadata = {
   title: "VendorView",
@@ -21,8 +20,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    
     <html lang="en">
+      <head>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+      </head>
       <body className={poppins_init.variable}>
         <SidebarProvider>
           <SnackbarProvider>
